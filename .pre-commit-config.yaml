@@ -32,13 +32,13 @@ repos:
     rev: v2.2.6
     hooks:
       - id: codespell
-        additional_dependencies: [tomli]
+        additional_dependencies: [tomli>=2.0]
 
   - repo: https://github.com/PyCQA/docformatter
     rev: v1.7.7
     hooks:
       - id: docformatter
-        additional_dependencies: [tomli]
+        additional_dependencies: [tomli>=2.0]
         args: ["--in-place"]
 
   - repo: https://github.com/psf/black

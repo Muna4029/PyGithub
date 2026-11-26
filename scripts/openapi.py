@@ -1513,7 +1513,7 @@ class CreateClassMethodTransformer(CstTransformerBase):
         api_response: str | None,
         prefix_path,
         return_property: str | None,
-        create_new_class_func: Callable[str] | None,
+        create_new_class_func: Callable[[str], None] | None,
     ):
         super().__init__()
         self.spec = spec
@@ -2378,12 +2378,12 @@ class OpenApi:
                                 continue
 
                             for verb in verbs:
-                                if implemented_paths.get(candidate_path, {}).get(verb.upper, {}).get("methods", []):
+                                if implemented_paths.get(candidate_path, {}).get(verb.upper(), {}).get("methods", []):
                                     methods = [
                                         f"{method.get('class')}.{method.get('name')}"
                                         for method in implemented_paths.get(candidate_path, {})
-                                        .get("GET", {})
-                                        .get("methods")
+                                        .get(verb.upper(), {})
+                                        .get("methods", [])
                                     ]
                                     if self.verbose:
                                         print(f"    - {verb} {candidate_path} implemented by {', '.join(methods)}")
@@ -2852,7 +2852,7 @@ class OpenApi:
         success = True
         try:
             if dry_run:
-                with NamedTemporaryFile(delete_on_close=False) as f:
+                with NamedTemporaryFile(delete=False) as f:
                     f.close()
                     print(f"Updating temporary index {f.name}")
                     self.index(github_path, spec_file, f.name, check_verbs=False, dry_run=False)

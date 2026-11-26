@@ -378,7 +378,7 @@ class Repository(CompletableGithubObject):
         self._contents_url: Attribute[str] = NotSet
         self._contributors_url: Attribute[str] = NotSet
         self._created_at: Attribute[datetime] = NotSet
-        self._custom_properties: Attribute[dict[str, None | str | list]] = NotSet  # type: ignore
+        self._custom_properties: Attribute[dict[str, None | str | list[Any]]] = NotSet  # type: ignore
         self._default_branch: Attribute[str] = NotSet
         self._delete_branch_on_merge: Attribute[bool] = NotSet
         self._deployments_url: Attribute[str] = NotSet
@@ -2208,7 +2208,7 @@ class Repository(CompletableGithubObject):
         archived: Opt[bool] = NotSet,
         allow_forking: Opt[bool] = NotSet,
         web_commit_signoff_required: Opt[bool] = NotSet,
-        security_and_analysis: Opt[dict[Any]] = NotSet,
+        security_and_analysis: Opt[dict[str, Any]] = NotSet,
     ) -> None:
         """
         :calls: `PATCH /repos/{owner}/{repo} <https://docs.github.com/en/rest/reference/repos>`_
@@ -4616,10 +4616,10 @@ class Repository(CompletableGithubObject):
         )
         return github.DependabotAlert.DependabotAlert(self._requester, headers, data)
 
-    def get_custom_properties(self) -> dict[str, None | str | list]:
+    def get_custom_properties(self) -> dict[str, None | str | list[Any]]:
         """
         :calls: `GET /repos/{owner}/{repo}/properties/values <https://docs.github.com/en/rest/repos/custom-properties#get-all-custom-property-values-for-a-repository>`_
-        :rtype: dict[str, None | str | list]
+        :rtype: dict[str, None | str | list[Any]]
         """
         url = f"{self.url}/properties/values"
         _, data = self._requester.requestJsonAndCheck("GET", url)

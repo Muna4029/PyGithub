@@ -39,7 +39,7 @@ import glob
 import os
 import re
 import sys
-from typing import Iterable
+from typing import Dict, Iterable, Set, Tuple
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -283,10 +283,10 @@ githubObjectTypes = {
     for object_type in ["GithubObject", "CompletableGithubObject", "NonCompletableGithubObject"]
     for variation in [object_type, "GithubObject." + object_type, "github.GithubObject." + object_type]
 }
-githubObjectClasses: dict[str, str] = {}
+githubObjectClasses: Dict[str, str] = {}
 
 
-def collect_classes(types: set[str]) -> Iterable[tuple[str, str]]:
+def collect_classes(types: Set[str]) -> Iterable[Tuple[str, str]]:
     def get_base_classes(class_definition: str) -> Iterable[str]:
         if "(" in class_definition and ")" in class_definition:
             for base in class_definition[class_definition.index("(") + 1 : class_definition.index(")")].split(","):
